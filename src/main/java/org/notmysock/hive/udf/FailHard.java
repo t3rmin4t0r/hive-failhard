@@ -5,15 +5,14 @@ import org.apache.hadoop.hive.ql.udf.UDFType;
 import org.apache.hadoop.io.IntWritable;
 
 @UDFType(deterministic = false)
-public class FailSafe extends UDF {
-	private int repeats = 0;
+public class FailHard extends UDF {
+	private static int attempts = 0;
+	public final Object XX = null;
 	public final IntWritable evaluate(IntWritable a) {
-		if (a == null) {
+		if (attempts == 0) {
+			attempts++;
+			System.err.println(XX.toString());
 			return a;
-		}
-		repeats++;
-		if (repeats >= a.get()) {
-			throw new RuntimeException();
 		}
 		return a;
 	}
